@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+variables:
+  GIT_STRATEGY: clone
+
+
+Update Spa:
+  stage: deploy
+  script:
+    - sudo ~/update-spa-dev.sh
+  when: always
