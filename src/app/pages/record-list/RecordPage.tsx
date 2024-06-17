@@ -11,46 +11,50 @@ import { UsersListFilter } from "../../modules/apps/user-management/users-list/c
 import { Link } from "react-router-dom";
 
 const RecordPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerms, setSearchTerms] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState();
+  const [checkAll, setCheckAll] = useState(false);
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   let tabs = [{ title: "List" }, { title: "Pipeline" }, { title: "Map View" }];
 
+  let LISTVIEWHEADERS = demoarry?.data?.LISTVIEW_HEADERS;
+  let LISTVIEWENTRIES = demoarry?.data?.LISTVIEW_ENTRIES;
   useEffect(() => {
-    getData();
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
-  const getData = async () => {
-    try {
-      let headers = {
-        "cache-control": "no-cache",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      };
+  const handleCheckAllChange = () => {
+    setCheckAll(!checkAll);
+    if (!checkAll) {
+      const allIds = Object.values(LISTVIEWENTRIES)
+        .slice(0, 17)
+        .map((entry, index) => index);
 
-      let body = {
-        module: "Contacts",
-      };
-
-      let res = await axios.post(
-        "https://v7-dev.simply-crm.com/spa.php",
-        body,
-        {
-          headers: headers,
-        }
-      );
-      console.log("res", res?.data);
-    } catch (error) {
-      console.log("err", error);
+      setCheckedItems(allIds);
+    } else {
+      setCheckedItems([]);
     }
   };
 
-  let LISTVIEWHEADERS = demoarry?.data?.LISTVIEW_HEADERS;
-  let LISTVIEWENTRIES = demoarry?.data?.LISTVIEW_ENTRIES;
+  const handleCheckboxChange = (id: string) => {
+    if (checkedItems.includes(id)) {
+      setCheckedItems(checkedItems.filter((item) => item !== id));
+      setCheckAll(false);
+    } else {
+      setCheckedItems([...checkedItems, id]);
+    }
+  };
+
+  const handleSearchChange = (headerKey: string, value: string) => {
+    setSearchTerms({
+      ...searchTerms,
+      [headerKey]: value,
+    });
+  };
 
   return (
     <>
@@ -96,17 +100,29 @@ const RecordPage: React.FC = () => {
               </div>
               {/* end::Search */}
             </div>
-            <div className="card-toolbar">
-              <UsersListFilter />
-              <button
-                type="button"
-                className="btn btn-primary"
-                // onClick={openAddUserModal}
-              >
-                <KTIcon iconName="plus" className="fs-2" />
-                Add User
-              </button>
-            </div>
+            {checkedItems?.length > 0 ? (
+              <div className="d-flex justify-content-end align-items-center">
+                <div className="fw-bolder me-5">
+                  <span className="me-2">{checkedItems?.length}</span> Selected
+                </div>
+
+                <button type="button" className="btn btn-danger">
+                  Delete Selected
+                </button>
+              </div>
+            ) : (
+              <div className="card-toolbar">
+                <UsersListFilter />
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  // onClick={openAddUserModal}
+                >
+                  <KTIcon iconName="plus" className="fs-2" />
+                  Add User
+                </button>
+              </div>
+            )}
           </div>
           <div className="card-header border-0 pt-5">
             <h3 className="card-title align-items-start flex-column">
@@ -131,12 +147,27 @@ const RecordPage: React.FC = () => {
                           value="1"
                           data-kt-check="true"
                           data-kt-check-target=".widget-13-check"
+                          checked={checkAll}
+                          onChange={handleCheckAllChange}
                         />
                       </div>
                     </th>
-
+                    <th className="min-w-150px">Actions</th>
                     {Object?.values(LISTVIEWHEADERS)?.map((header) => {
-                      return <th className="min-w-150px">{header?.label}</th>;
+                      return (
+                        <th className="min-w-150px">
+                          <input
+                            type="text"
+                            data-kt-user-table-filter="search"
+                            className="form-control form-control-solid min-w-150px"
+                            placeholder={header?.label}
+                            value={searchTerms[header?.label] || ""}
+                            onChange={(e) =>
+                              handleSearchChange(header?.label, e.target.value)
+                            }
+                          />
+                        </th>
+                      );
                     })}
                   </tr>
                 </thead>
@@ -154,11 +185,47 @@ const RecordPage: React.FC = () => {
                                   className="form-check-input widget-13-check"
                                   type="checkbox"
                                   value="1"
+                                  checked={checkedItems.includes(index)}
+                                  onChange={() => handleCheckboxChange(index)}
                                 />
                               </div>
                             </td>
+                            <td>
+                              <>
+                                <a
+                                  href="#"
+                                  className="btn btn-light btn-active-light-primary btn-sm"
+                                  data-kt-menu-trigger="click"
+                                  data-kt-menu-placement="bottom-end"
+                                >
+                                  Actions
+                                  <KTIcon
+                                    iconName="down"
+                                    className="fs-5 m-0"
+                                  />
+                                </a>
+
+                                <div
+                                  className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
+                                  data-kt-menu="true"
+                                >
+                                  <div className="menu-item px-3">
+                                    <a className="menu-link px-3">Edit</a>
+                                  </div>
+
+                                  <div className="menu-item px-3">
+                                    <a
+                                      className="menu-link px-3"
+                                      data-kt-users-table-filter="delete_row"
+                                    >
+                                      Delete
+                                    </a>
+                                  </div>
+                                </div>
+                              </>
+                            </td>
                             {Object.values(entry.rawData)
-                              .slice(0, 17)
+                              .slice(0, 16)
                               .map((value, subIndex) => (
                                 <td key={subIndex}>
                                   <span className="text-gray-900 fw-bold tes text-center fs-6">
@@ -166,6 +233,7 @@ const RecordPage: React.FC = () => {
                                   </span>
                                 </td>
                               ))}
+                            <td></td>
                           </tr>
                         ))}
                     </>
