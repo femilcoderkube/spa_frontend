@@ -9,12 +9,15 @@ import { UsersListHeader } from "../../modules/apps/user-management/users-list/c
 import { UsersListLoading } from "../../modules/apps/user-management/users-list/components/loading/UsersListLoading";
 import { UsersListFilter } from "../../modules/apps/user-management/users-list/components/header/UsersListFilter";
 import { Link } from "react-router-dom";
+import { UserEditModal } from "../../modules/apps/user-management/users-list/user-edit-modal/UserEditModal";
+import FormModel from "../../../Components/FormModel";
 
 const RecordPage: React.FC = () => {
   const [searchTerms, setSearchTerms] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState();
   const [checkAll, setCheckAll] = useState(false);
+  const [addModel, setAddModel] = useState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   let tabs = [{ title: "List" }, { title: "Pipeline" }, { title: "Map View" }];
@@ -81,23 +84,54 @@ const RecordPage: React.FC = () => {
                 {tabs?.map((val: any, index: any) => {
                   return (
                     <div className="nav-item">
-                      <Link
-                        to={""}
-                        className={`nav-link ${
-                          index === selectedIndex ? "" : "active"
-                        } `}
-                        role="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedIndex(index);
-                        }}
-                      >
-                        {val?.title}
-                      </Link>
+                      <>
+                        <Link
+                          to={"#"}
+                          className={`nav-link ${
+                            index === selectedIndex ? "" : "active"
+                          } `}
+                          role="button"
+                          data-kt-menu-trigger={
+                            selectedIndex === 1 ? "click" : ""
+                          }
+                          data-kt-menu-placement="bottom-end"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedIndex(index);
+                          }}
+                        >
+                          {val?.title}
+                          {index === 1 && (
+                            <KTIcon iconName="down" className="fs-5 m-0" />
+                          )}
+                        </Link>
+                        {index === 1 && (
+                          <div
+                            className="menu  menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4 "
+                            data-kt-menu="true"
+                          >
+                            <div className="menu-item px-3">
+                              <a className="menu-link px-3">
+                                + Add Visual Pipeline
+                              </a>
+                            </div>
+                            {/* 
+                          <div className="menu-item px-3">
+                            <a
+                              className="menu-link px-3"
+                              data-kt-users-table-filter="delete_row"
+                            >
+                              Delete
+                            </a>
+                          </div> */}
+                          </div>
+                        )}
+                      </>
                     </div>
                   );
                 })}
               </div>
+
               {/* end::Search */}
             </div>
             {checkedItems?.length > 0 ? (
@@ -114,9 +148,12 @@ const RecordPage: React.FC = () => {
               <div className="card-toolbar">
                 <UsersListFilter />
                 <button
-                  type="button"
+                  type="submit"
                   className="btn btn-primary"
-                  // onClick={openAddUserModal}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setAddModel(true);
+                  }}
                 >
                   <KTIcon iconName="plus" className="fs-2" />
                   Add User
@@ -252,6 +289,7 @@ const RecordPage: React.FC = () => {
             {loading && <UsersListLoading />}
           </div>
         </div>
+        {addModel && <FormModel setAddModel={setAddModel} />}
       </Content>
     </>
   );
