@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import { KTIcon, toAbsoluteUrl } from "../_metronic/helpers";
 import { useFormik } from "formik";
-import { initialUser } from "../app/modules/apps/user-management/users-list/core/_models";
+import {
+  initialUser,
+  User,
+} from "../app/modules/apps/user-management/users-list/core/_models";
 import { UsersListLoading } from "../app/modules/apps/user-management/users-list/components/loading/UsersListLoading";
 import clsx from "clsx";
 
-type Props = {
-  isUserLoading: boolean;
+interface FormModelProps {
   user: User;
-};
-
+  setAddModel: (value: boolean) => void;
+}
 const editUserSchema = Yup.object().shape({
   email: Yup.string()
     .email("Wrong email format")
@@ -23,8 +25,8 @@ const editUserSchema = Yup.object().shape({
     .required("Name is required"),
 });
 
-const FormModel = ({ user, setAddModel }) => {
-  const [userForEdit] = useState<User>({
+const FormModel: React.FC<FormModelProps> = ({ user, setAddModel }) => {
+  const [userForEdit] = useState<any>({
     ...user,
     avatar: user?.avatar || initialUser.avatar,
     role: user?.role || initialUser.role,
@@ -176,13 +178,13 @@ const FormModel = ({ user, setAddModel }) => {
                     autoComplete="off"
                     disabled={formik.isSubmitting}
                   />
-                  {formik.touched.name && formik.errors.name && (
+                  {/* {formik.touched.name && formik.errors.name && (
                     <div className="fv-plugins-message-container">
                       <div className="fv-help-block">
                         <span role="alert">{formik.errors.name}</span>
                       </div>
                     </div>
-                  )}
+                  )} */}
                   {/* end::Input */}
                 </div>
                 {/* end::Input group */}
