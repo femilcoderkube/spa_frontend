@@ -8,6 +8,7 @@ import { KTIcon } from "../../../_metronic/helpers";
 import { UsersListLoading } from "../../modules/apps/user-management/users-list/components/loading/UsersListLoading";
 import { UsersListFilter } from "../../modules/apps/user-management/users-list/components/header/UsersListFilter";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 import FormModel from "../../../Components/FormModel";
 import clsx from "clsx";
@@ -300,7 +301,7 @@ const RecordPage: React.FC = () => {
                   </tr>
                 </thead>
 
-                <tbody>
+                <tbody className="text-gray-600 fw-bold">
                   {data?.length > 0 ? (
                     <>
                       {data?.map((entry: any, index: any) => (
@@ -379,6 +380,28 @@ const RecordPage: React.FC = () => {
               </table>
             </div>
             {loading && <UsersListLoading />}
+          </div>
+          <div className="mt-2 mb-2">
+            <ReactPaginate
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel="..."
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              pageCount={10}
+              pageRangeDisplayed={4}
+              marginPagesDisplayed={2}
+              // onPageChange={this.handlePageClick}
+              containerClassName="pagination justify-content-center"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              activeClassName="active"
+              // efAllControls
+            />
           </div>
         </div>
         {addModel && <FormModel user={user} setAddModel={setAddModel} />}
