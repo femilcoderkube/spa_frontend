@@ -40,6 +40,7 @@ const FormModel: React.FC<FormModelProps> = ({ user, setAddModel }) => {
     validationSchema: editUserSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
+      setAddModel(false);
       // try {
       //   if (isNotEmpty(values.id)) {
       //     await updateUser(values)
@@ -91,24 +92,18 @@ const FormModel: React.FC<FormModelProps> = ({ user, setAddModel }) => {
                 onSubmit={formik.handleSubmit}
                 noValidate
               >
-                {/* begin::Input group */}
                 <div className="fv-row mb-7">
-                  {/* begin::Label */}
                   <label className="d-block fw-bold fs-6 mb-5">Avatar</label>
-                  {/* end::Label */}
 
-                  {/* begin::Image input */}
                   <div
                     className="image-input image-input-outline"
                     data-kt-image-input="true"
                     style={{ backgroundImage: `url('${blankImg}')` }}
                   >
-                    {/* begin::Preview existing avatar */}
                     <div
                       className="image-input-wrapper w-125px h-125px"
                       style={{ backgroundImage: `url('${userAvatarImg}')` }}
                     ></div>
-                    {/* end::Preview existing avatar */}
 
                     {/* begin::Label */}
                     {/* <label
@@ -152,15 +147,12 @@ const FormModel: React.FC<FormModelProps> = ({ user, setAddModel }) => {
                   {/* <div className='form-text'>Allowed file types: png, jpg, jpeg.</div> */}
                   {/* end::Hint */}
                 </div>
-                {/* begin::Input group */}
+
                 <div className="fv-row mb-7">
-                  {/* begin::Label */}
                   <label className="required fw-bold fs-6 mb-2">
                     Full Name
                   </label>
-                  {/* end::Label */}
 
-                  {/* begin::Input */}
                   <input
                     placeholder="Full name"
                     {...formik.getFieldProps("name")}
@@ -178,17 +170,215 @@ const FormModel: React.FC<FormModelProps> = ({ user, setAddModel }) => {
                     autoComplete="off"
                     disabled={formik.isSubmitting}
                   />
-                  {/* {formik.touched.name && formik.errors.name && (
+                  {formik.touched.name && formik.errors.name && (
                     <div className="fv-plugins-message-container">
                       <div className="fv-help-block">
-                        <span role="alert">{formik.errors.name}</span>
+                        <span role="alert">{String(formik.errors.name)}</span>
                       </div>
                     </div>
-                  )} */}
-                  {/* end::Input */}
+                  )}
                 </div>
-                {/* end::Input group */}
-                {/* end::Input group */}
+
+                <div className="fv-row mb-7">
+                  <label className="required fw-bold fs-6 mb-2">Email</label>
+
+                  <input
+                    placeholder="Email"
+                    {...formik.getFieldProps("email")}
+                    className={clsx(
+                      "form-control form-control-solid mb-3 mb-lg-0",
+                      {
+                        "is-invalid":
+                          formik.touched.email && formik.errors.email,
+                      },
+                      {
+                        "is-valid":
+                          formik.touched.email && !formik.errors.email,
+                      }
+                    )}
+                    type="email"
+                    name="email"
+                    autoComplete="off"
+                    disabled={formik.isSubmitting}
+                  />
+
+                  {formik.touched.email && formik.errors.email && (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block">
+                        <span role="alert">{String(formik.errors.email)}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-7">
+                  <label className="required fw-bold fs-6 mb-5">Role</label>
+
+                  <div className="d-flex fv-row">
+                    <div className="form-check form-check-custom form-check-solid">
+                      <input
+                        className="form-check-input me-3"
+                        {...formik.getFieldProps("role")}
+                        name="role"
+                        type="radio"
+                        value="Administrator"
+                        id="kt_modal_update_role_option_0"
+                        checked={formik.values.role === "Administrator"}
+                        disabled={formik.isSubmitting}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="kt_modal_update_role_option_0"
+                      >
+                        <div className="fw-bolder text-gray-800">
+                          Administrator
+                        </div>
+                        <div className="text-gray-600">
+                          Best for business owners and company administrators
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="separator separator-dashed my-5"></div>
+
+                  <div className="d-flex fv-row">
+                    <div className="form-check form-check-custom form-check-solid">
+                      <input
+                        className="form-check-input me-3"
+                        {...formik.getFieldProps("role")}
+                        name="role"
+                        type="radio"
+                        value="Developer"
+                        id="kt_modal_update_role_option_1"
+                        checked={formik.values.role === "Developer"}
+                        disabled={formik.isSubmitting}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="kt_modal_update_role_option_1"
+                      >
+                        <div className="fw-bolder text-gray-800">Developer</div>
+                        <div className="text-gray-600">
+                          Best for developers or people primarily using the API
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="separator separator-dashed my-5"></div>
+
+                  <div className="d-flex fv-row">
+                    <div className="form-check form-check-custom form-check-solid">
+                      <input
+                        className="form-check-input me-3"
+                        {...formik.getFieldProps("role")}
+                        name="role"
+                        type="radio"
+                        value="Analyst"
+                        id="kt_modal_update_role_option_2"
+                        checked={formik.values.role === "Analyst"}
+                        disabled={formik.isSubmitting}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="kt_modal_update_role_option_2"
+                      >
+                        <div className="fw-bolder text-gray-800">Analyst</div>
+                        <div className="text-gray-600">
+                          Best for people who need full access to analytics
+                          data, but don't need to update business settings
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="separator separator-dashed my-5"></div>
+
+                  <div className="d-flex fv-row">
+                    <div className="form-check form-check-custom form-check-solid">
+                      <input
+                        className="form-check-input me-3"
+                        {...formik.getFieldProps("role")}
+                        name="role"
+                        type="radio"
+                        value="Support"
+                        id="kt_modal_update_role_option_3"
+                        checked={formik.values.role === "Support"}
+                        disabled={formik.isSubmitting}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="kt_modal_update_role_option_3"
+                      >
+                        <div className="fw-bolder text-gray-800">Support</div>
+                        <div className="text-gray-600">
+                          Best for employees who regularly refund payments and
+                          respond to disputes
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="separator separator-dashed my-5"></div>
+
+                  <div className="d-flex fv-row">
+                    <div className="form-check form-check-custom form-check-solid">
+                      <input
+                        className="form-check-input me-3"
+                        {...formik.getFieldProps("role")}
+                        name="role"
+                        type="radio"
+                        id="kt_modal_update_role_option_4"
+                        value="Trial"
+                        checked={formik.values.role === "Trial"}
+                        disabled={formik.isSubmitting}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="kt_modal_update_role_option_4"
+                      >
+                        <div className="fw-bolder text-gray-800">Trial</div>
+                        <div className="text-gray-600">
+                          Best for people who need to preview content data, but
+                          don't need to make any updates
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center pt-15">
+                  <button
+                    type="reset"
+                    className="btn btn-light me-3"
+                    data-kt-users-modal-action="cancel"
+                    disabled={formik.isSubmitting}
+                  >
+                    Discard
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    data-kt-users-modal-action="submit"
+                    disabled={
+                      formik.isSubmitting || !formik.isValid || !formik.touched
+                    }
+                  >
+                    <span className="indicator-label">Submit</span>
+                    {formik.isSubmitting && (
+                      <span className="indicator-progress">
+                        Please wait...{" "}
+                        <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+                      </span>
+                    )}
+                  </button>
+                </div>
               </form>
               {formik.isSubmitting && <UsersListLoading />}
             </div>
