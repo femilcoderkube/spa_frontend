@@ -29,7 +29,7 @@ const RecordPage: React.FC = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
   }, []);
 
   // useEffect(() => {
@@ -266,7 +266,7 @@ const RecordPage: React.FC = () => {
             <div className="table-responsive">
               <table className="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
                 <thead>
-                  {/* <tr className="fw-bold text-muted">
+                  <tr className="fw-bold text-muted">
                     <th className="w-25px">
                       <div className="form-check form-check-sm form-check-custom form-check-solid">
                         <input
@@ -297,136 +297,70 @@ const RecordPage: React.FC = () => {
                         </th>
                       );
                     })}
-                  </tr> */}
+                  </tr>
                 </thead>
 
                 <tbody>
                   {data?.length > 0 ? (
                     <>
-                      {/* {Object.values(LISTVIEWENTRIES)
-                        .slice(0, 17)
-                        .map((entry, index: any) => (
-                          <tr key={index}>
-                            <td>
-                              <div className="form-check form-check-sm form-check-custom form-check-solid">
-                                <input
-                                  className="form-check-input widget-13-check"
-                                  type="checkbox"
-                                  value="1"
-                                  checked={checkedItems.includes(index)}
-                                  onChange={() => handleCheckboxChange(index)}
-                                />
-                              </div>
-                            </td>
-                            <td>
-                              <>
-                                <a
-                                  href="#"
-                                  className="btn btn-light btn-active-light-primary btn-sm"
-                                  data-kt-menu-trigger="click"
-                                  data-kt-menu-placement="bottom-end"
-                                >
-                                  Actions
-                                  <KTIcon
-                                    iconName="down"
-                                    className="fs-5 m-0"
-                                  />
-                                </a>
-
-                                <div
-                                  className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                  data-kt-menu="true"
-                                >
-                                  <div className="menu-item px-3">
-                                    <a className="menu-link px-3">Edit</a>
-                                  </div>
-
-                                  <div className="menu-item px-3">
-                                    <a
-                                      className="menu-link px-3"
-                                      data-kt-users-table-filter="delete_row"
-                                    >
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </>
-                            </td>
-                            {Object.values(entry.rawData)
-                              .slice(0, 16)
-                              .map((value, subIndex) => (
-                                <td key={subIndex}>
-                                  <span className="text-gray-900 fw-bold tes text-center fs-6">
-                                    {value}
-                                  </span>
-                                </td>
-                              ))}
-                          </tr>
-                        ))} */}
-
-                      <tbody>
-                        {data.map((entry: any, index: any) => (
-                          <tr key={index}>
-                            <td className={clsx("min-w-100px")}>
-                              <div className="form-check form-check-sm form-check-custom form-check-solid">
-                                <input
-                                  className="form-check-input widget-13-check"
-                                  type="checkbox"
-                                  value="1"
-                                  checked={checkedItems.includes(index)}
-                                  onChange={() => handleCheckboxChange(index)}
-                                />
-                              </div>
-                            </td>
-                            <td className={clsx("min-w-100px")}>
-                              <>
-                                <a
-                                  href="#"
-                                  className="btn btn-light btn-active-light-primary btn-sm"
-                                  data-kt-menu-trigger="click"
-                                  data-kt-menu-placement="bottom-end"
-                                >
-                                  Actions
-                                  <KTIcon
-                                    iconName="down"
-                                    className="fs-5 m-0"
-                                  />
-                                </a>
-
-                                <div
-                                  className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                  data-kt-menu="true"
-                                >
-                                  <div className="menu-item px-3">
-                                    <a className="menu-link px-3">Edit</a>
-                                  </div>
-
-                                  <div className="menu-item px-3">
-                                    <a
-                                      className="menu-link px-3"
-                                      data-kt-users-table-filter="delete_row"
-                                    >
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </>
-                            </td>
-                            {entry?.map((value: any, subIndex: any) => (
-                              <td
-                                key={subIndex}
-                                className={
-                                  subIndex === 6
-                                    ? clsx("min-w-125px")
-                                    : clsx("min-w-100px")
-                                }
+                      {data?.map((entry: any, index: any) => (
+                        <tr key={index}>
+                          <td>
+                            <div className="form-check form-check-sm form-check-custom form-check-solid">
+                              <input
+                                className="form-check-input widget-13-check"
+                                type="checkbox"
+                                value="1"
+                                checked={checkedItems.includes(index)}
+                                onChange={() => handleCheckboxChange(index)}
+                              />
+                            </div>
+                          </td>
+                          <td>
+                            <>
+                              <a
+                                href="#"
+                                className="btn btn-light btn-active-light-primary btn-sm"
+                                data-kt-menu-trigger="click"
+                                data-kt-menu-placement="bottom-end"
                               >
-                                {value}
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
+                                Actions
+                                <KTIcon iconName="down" className="fs-5 m-0" />
+                              </a>
+
+                              <div
+                                className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
+                                data-kt-menu="true"
+                              >
+                                <div className="menu-item px-3">
+                                  <a className="menu-link px-3">Edit</a>
+                                </div>
+
+                                <div className="menu-item px-3">
+                                  <a
+                                    className="menu-link px-3"
+                                    data-kt-users-table-filter="delete_row"
+                                  >
+                                    Delete
+                                  </a>
+                                </div>
+                              </div>
+                            </>
+                          </td>
+
+                          {entry?.map((value: any, subIndex: any) => (
+                            <td key={subIndex}>
+                              <span
+                                className={`${
+                                  value ? "text-gray-900" : "text-gray-400"
+                                } fw-bold tes text-center fs-6`}
+                              >
+                                {value ? value : "No Details"}
+                              </span>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
                     </>
                   ) : (
                     <tr>
